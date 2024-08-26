@@ -17,6 +17,7 @@ const DashboardPage = async () => {
           {user.picture && (
             <Image
               src={user.picture}
+              alt={`${user.name}'s profile picture`}
               className="rounded-full size-16"
               height={40}
               width={40}
