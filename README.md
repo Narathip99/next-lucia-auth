@@ -13,25 +13,17 @@
    ```bash
    bun install
    ```
-   or
+3. Generate Prisma schema:
    ```bash
-   npm install
+   bunx prisma generate
    ```
-3. m
-```bash
-bunx prisma generate or npx prisma generate
-```
-4. .env file
-### การตั้งค่า
-
-เพื่อให้โครงการทำงานได้ คุณจะต้องสร้างไฟล์ `.env` ที่รากของโครงการและกำหนดค่าต่อไปนี้:
-
-* **DATABASE_URL:** ใช้สำหรับเชื่อมต่อกับฐานข้อมูล
-* **GOOGLE_CLIENT_ID:** ใช้สำหรับการยืนยันตัวตนผ่าน Google
-* **GOOGLE_CLIENT_SECRET:** เป็นค่าลับที่ใช้ร่วมกับ Google Client ID
-
-**ตัวอย่างไฟล์ .env:**
-5. 
-```bash
-bun dev or npm run dev
-```
+4. Create a .env file at the root of your project and add the following environment variables:
+    ```bash
+   DATABASE_URL="http://localhost:3000"
+   GOOGLE_CLIENT_ID="from google api service"
+   GOOGLE_CLIENT_SECRET="from google api service"
+   ```
+5. Run Project
+   ```bash
+   bun dev
+   ```
