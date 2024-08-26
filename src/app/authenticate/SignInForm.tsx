@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "./auth.action";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -41,7 +42,6 @@ const SignInForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signInSchema>) {
     const res = await signIn(values);
     if (res.success) {
@@ -50,12 +50,9 @@ const SignInForm = () => {
     } else {
       toast.error(res.error);
     }
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
   }
   return (
-    <Card>
+    <Card className="min-w-[500px]">
       <CardHeader>
         <CardTitle>Welcome back!</CardTitle>
         <CardDescription>Sign in to your account to continue.</CardDescription>
@@ -63,7 +60,7 @@ const SignInForm = () => {
       <CardContent className="space-y-2">
         <Form {...form}>
           <form
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -104,9 +101,10 @@ const SignInForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="self-start">
+            <Button type="submit" className="w-full">
               Login
             </Button>
+            <GoogleOAuthButton />
           </form>
         </Form>
       </CardContent>

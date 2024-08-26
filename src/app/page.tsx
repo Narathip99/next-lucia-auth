@@ -1,10 +1,21 @@
-import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { getUser } from "@/lib/lucia"; // Ensure this path is correct
 
-export default function Home() {
-  return (
-    <main>
-      <h1 className="text-3xl font-bold">helloworld</h1>
-      <Button>Button</Button>
-    </main>
-  );
-}
+export const metadata = {
+  title: "Redirecting...",
+};
+
+const Home = async () => {
+  const user = await getUser(); // Fetch the user
+  if (user) {
+    redirect("/dashboard"); // Redirect if user exists
+  } else {
+    redirect("/authenticate"); // Redirect if no user
+  }
+
+  // Although the function will redirect and never reach this line,
+  // it's good to return something as fallback.
+  return <div>Redirecting...</div>;
+};
+
+export default Home;

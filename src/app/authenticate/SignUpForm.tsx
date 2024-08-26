@@ -50,7 +50,6 @@ const SignUpForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     const res = await signUp(values);
     if (res.success) {
@@ -59,20 +58,17 @@ const SignUpForm = () => {
     } else {
       toast.error(res.error);
     }
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
   }
   return (
     <Card className="min-w-[500px]">
       <CardHeader>
-        <CardTitle>Begin your journey...</CardTitle>
+        <CardTitle>Create Account</CardTitle>
         <CardDescription>Create your account to continue.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         <Form {...form}>
           <form
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -147,7 +143,7 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="self-start">
+            <Button type="submit" className="w-full">
               Sign Up
             </Button>
           </form>

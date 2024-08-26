@@ -16,6 +16,8 @@ const GoogleOAuthButton = () => {
           toast.error(res.error);
         }
       }}
+      variant="outline"
+      className="w-full"
     >
       <RiGoogleFill className="w-4 h-4 mr-2" /> Continue with Google!
     </Button>
