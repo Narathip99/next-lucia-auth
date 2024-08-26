@@ -7,15 +7,16 @@
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-username/your-repo.git](https://github.com/your-username/your-repo.git)
-2. install dependency
-```bash
-bun install
-```
-or
-```bash
-npm install
-```
+   git clone [https://github.com/Narathip99/next-lucia-auth.git](https://github.com/Narathip99/next-lucia-auth.git)
+   ```   
+2. Install dependencies:
+   ```bash
+   bun install
+   ```
+   or
+   ```bash
+   npm install
+   ```
 3. m
 ```bash
 bunx prisma generate or npx prisma generate
