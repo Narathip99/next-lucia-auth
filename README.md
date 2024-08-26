@@ -4,10 +4,6 @@
 
 ## Getting Started
 
-### Prerequisites
-* **Node.js:** Version 16 or later
-* **npm:** Included with Node.js or **bun:** A fast all-in-one JavaScript runtime
-
 ### Installation
 1. Clone the repository:
    ```bash
