@@ -1,6 +1,6 @@
 # Next.js + Lucia Authentication Example
 
-**Based on this tutorial:** [https://nextjs.org/docs/basic-features/font-optimization](https://www.youtube.com/watch?v=t-JJgTRf3Ms)
+**Based on this [tutorial](https://www.youtube.com/watch?v=t-JJgTRf3Ms)** 
 
 ## Getting Started
 
