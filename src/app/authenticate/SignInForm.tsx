@@ -1,15 +1,14 @@
 "use client";
-import React from "react";
-// components
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -19,20 +18,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-// react hook form
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-// zod for validation
+
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { signIn } from "./auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const signInSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email" }),
-  password: z.string().min(8, { message: "Please enter your password" }),
+  email: z.string().email(),
+  password: z.string().min(8),
 });
 
 const SignInForm = () => {
-  // 1. Define your form.
+  const router = useRouter();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -42,19 +42,24 @@ const SignInForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof signInSchema>) {
+  async function onSubmit(values: z.infer<typeof signInSchema>) {
+    const res = await signIn(values);
+    if (res.success) {
+      toast.success("Login successful");
+      router.push("/dashboard");
+    } else {
+      toast.error(res.error);
+    }
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Welcome back!</CardTitle>
-        <CardDescription>Sign in to your accout to continue</CardDescription>
+        <CardDescription>Sign in to your account to continue.</CardDescription>
       </CardHeader>
-
       <CardContent className="space-y-2">
         <Form {...form}>
           <form
@@ -78,7 +83,6 @@ const SignInForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -101,7 +105,7 @@ const SignInForm = () => {
               )}
             />
             <Button type="submit" className="self-start">
-              Sign in
+              Login
             </Button>
           </form>
         </Form>

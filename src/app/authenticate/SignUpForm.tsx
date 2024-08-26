@@ -1,15 +1,14 @@
 "use client";
-import React from "react";
-// components
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -19,22 +18,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-// react hook form
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-// zod for validation
+
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { signUp } from "./auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const signUpSchema = z
   .object({
-    name: z.string().min(1, { message: "Please enter your name" }),
-    email: z.string().email({ message: "Please enter a valid email" }),
-    password: z.string().min(8, { message: "Please enter your password" }),
-    confirmPassword: z
-      .string()
-      .min(8, { message: "Please enter your password" }),
+    name: z.string().min(5),
+    email: z.string().email(),
+    password: z.string().min(8),
+    confirmPassword: z.string().min(8),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -42,56 +39,42 @@ export const signUpSchema = z
   });
 
 const SignUpForm = () => {
-  // 1. Define your form.
+  const router = useRouter();
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      confirmPassword: "",
       name: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
-    await signUp(values);  
+    const res = await signUp(values);
+    if (res.success) {
+      toast.success("Account created successfully");
+      router.push("/dashboard");
+    } else {
+      toast.error(res.error);
+    }
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-
   return (
     <Card className="min-w-[500px]">
       <CardHeader>
-        <CardTitle>Begin yout journey...</CardTitle>
-        <CardDescription>Sign up to your accout to continue</CardDescription>
+        <CardTitle>Begin your journey...</CardTitle>
+        <CardDescription>Create your account to continue.</CardDescription>
       </CardHeader>
-
       <CardContent className="space-y-2">
         <Form {...form}>
           <form
             className="flex flex-col gap-2"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Enter your name..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="email"
@@ -109,7 +92,19 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your name..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="password"
@@ -131,17 +126,16 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>Confirm password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Please confirm your password..."
+                      placeholder="Please confirm your password"
                       {...field}
                       onChange={(e) => {
                         e.target.value = e.target.value.trim();
@@ -153,9 +147,8 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
-
             <Button type="submit" className="self-start">
-              Sign up
+              Sign Up
             </Button>
           </form>
         </Form>
